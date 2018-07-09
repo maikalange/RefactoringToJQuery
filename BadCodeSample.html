@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Course Registration Form</title>
+    <script>
+        var registrants = [];
+        function handleForm() {
+
+            var registrant = {
+                name: "John Banda", experience: "Yes",
+                languages:
+                ["Java", "SQL Server", "MongoDB"]
+                ,
+            };
+
+            var firstName = document.getElementById("firstName").value;
+            var lastName = document.getElementById("lastName").value;
+
+            var hasProgrammingExperience = document.getElementsByName("hasExperience");
+            var seletedExperience;
+
+            for (var i = 0; i < hasProgrammingExperience.length; i++) 
+                if (hasProgrammingExperience[i].checked) {
+                    seletedExperience = hasProgrammingExperience[i].value;
+                }
+
+            var progLanguage = document.getElementById("progLanguage");
+
+            var selectedItems = progLanguage.options;
+            var selectedLanguages = [];
+            for (var j = 0; j < selectedItems.length; j++) {
+                if (selectedItems[j].selected) {
+                    selectedLanguages.push(selectedItems[j].value);
+                }
+            }
+
+            registrant.experience = seletedExperience;
+            registrant.languages = selectedLanguages;
+            registrant.name = firstName + " " + lastName;
+
+            var display = "";
+            registrants.push(registrant);
+            for (i = 0; i < registrants.length; i++) {
+                display += registrants[i].name + " " + registrants[i].experience + " programming experience: " + registrants[i].languages.toString() + " <br/>";
+            }
+
+            document.getElementById("registrantsList").innerHTML = display;
+        }
+
+    </script>
+</head>
+<body>
+    <form>
+        <div id="registrationForm">
+            <fieldset>
+                <legend> Course registration</legend>
+                <p>ACME Course Registration</p>
+                <label for="firstName">First name:</label>
+                <input type="text" id="firstName" required />
+                <label for="lastName">Last name</label>
+                <input type="text" required id="lastName" />
+                <p>Do you have any programming experience:</p>
+                <label for="yesProgrammer">Yes</label><input type="radio" name="hasExperience" value="yes" />
+                <label for="noProgrammer">No</label><input type="radio" name="hasExperience" value="no" />
+                <p>What Programming Languages have you used before?</p>
+                <select name="progLanguage" id="progLanguage" multiple>
+                    <optgroup label="Query Languages">
+                        <option value="SQLServer"> SQL Server Programming</option>
+                        <option value="Oracle"> Oracle PLSQL</option>
+                        <option value="Mongo"> Mongo</option>
+                    </optgroup>
+                    <optgroup label="General Programming Languages">
+                        <option value="CSharp">C# Programming</option>
+                        <option value="Java">Java Programming</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="Php">Php</option>
+                        <option value="VB">Visual Basic</option>
+                        <option value="Scala">Scala</option>
+                    </optgroup>
+                </select>
+                <input type="button" value="register" onclick="handleForm()" />
+            </fieldset>
+            <p>Registrants</p>
+            <div id="registrantsList"></div>
+        </div>
+    </form>
+</body>
+</html>
