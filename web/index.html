@@ -4,9 +4,10 @@
         <meta charset="utf-8" />
         <title>Course Registration Form</title>
         <link rel="stylesheet" href="css/style.css"/>
+        <script   src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-        <script   src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+
         <script>
             var registrants = [];
             function handleForm() {
@@ -15,28 +16,24 @@
                     languages: []
                 };
 
+
                 registrant.experience = $("[name=hasExperience]:checked").val();
                 registrant.languages = $("[name=progLanguage]").val();
                 registrant.name = $("#firstName").val() + " " + $("#lastName").val();
                 registrants.push(registrant);
 
-                var display = "";
-                registrants.forEach(function (r) {
-                    display += r.name + " " + r.experience + " programming experience: " + r.languages.toString() + " <br/>";
+
+                $(document).ready(function () {
+                    $('#registrants').DataTable({
+                        data: registrants,
+                        destroy: true,
+                        columns: [
+                            {"data": "name"},
+                            {"data": "experience"},
+                            {"data": "languages"}
+                        ]
+                    });
                 });
-
-//                $('#registrants').DataTable({
-//                    data: registrants,
-//                    columns: [
-//                        {title: "Name"},
-//                        {title: "Experience"},
-//                        {title: "Languages"}
-//                    ]
-//                });
-
-
-
-                $("#registrantsList").html(display);
             }
         </script>
         <style>
@@ -47,7 +44,7 @@
             <div id="registrationForm">
                 <fieldset>
                     <legend> Course registration</legend>
-                    <p>ACME Course Registration</p>
+                    <h3>ACME Course Registration</h3>
                     <label for="firstName">First name</label>
                     <input type="text" id="firstName" required />
                     <label for="lastName">Last name</label>
@@ -74,8 +71,8 @@
                     <input type="button" value="register" onclick="handleForm()" />
                 </fieldset>
                 <p id="courseRegistrants">Course Registrants</p>
-                <div id="registrantsList"></div>
-<!--                <table id="registrants" class="display" width="100%"></table>-->
+
+                <table id="registrants" class="display" width="100%"></table>
             </div>
         </form>
     </body>

@@ -8,7 +8,7 @@
                 box-sizing: border-box;
                 resize: vertical;
             }
-            select{
+            #progLanguage{
                 height:200px
             }
             /* Style the label to display next to the inputs */
