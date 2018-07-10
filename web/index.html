@@ -1,88 +1,144 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <title>Course Registration Form</title>
-    <script>
-        var registrants = [];
-        function handleForm() {
+    <head>
+        <meta charset="utf-8" />
+        <title>Course Registration Form</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+        <script   src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+        <script>
+            var registrants = [];
+            function handleForm() {
+                var registrant = {
+                    name: "", experience: "",
+                    languages: []
+                };
 
-            var registrant = {
-                name: "John Banda", experience: "Yes",
-                languages:
-                ["Java", "SQL Server", "MongoDB"]
-                
-            };
+                registrant.experience = $("[name=hasExperience]:checked").val();
+                registrant.languages = $("[name=progLanguage]").val();
+                registrant.name = $("#firstName").val() + " " + $("#lastName").val();
+                registrants.push(registrant);
 
-            var firstName = document.getElementById("firstName").value;
-            var lastName = document.getElementById("lastName").value;
+                var display = "";
+                registrants.forEach(function (r) {
+                    display += r.name + " " + r.experience + " programming experience: " + r.languages.toString() + " <br/>";
+                });
 
-            var hasProgrammingExperience = document.getElementsByName("hasExperience");
-            var seletedExperience;
+//                $('#registrants').DataTable({
+//                    data: registrants,
+//                    columns: [
+//                        {title: "Name"},
+//                        {title: "Experience"},
+//                        {title: "Languages"}
+//                    ]
+//                });
 
-            for (var i = 0; i < hasProgrammingExperience.length; i++) 
-                if (hasProgrammingExperience[i].checked) {
-                    seletedExperience = hasProgrammingExperience[i].value;
-                }
 
-            var progLanguage = document.getElementById("progLanguage");
-
-            var selectedItems = progLanguage.options;
-            var selectedLanguages = [];
-            for (var j = 0; j < selectedItems.length; j++) {
-                if (selectedItems[j].selected) {
-                    selectedLanguages.push(selectedItems[j].value);
-                }
+                $("#registrantsList").html(display);
+            }
+        </script>
+        <style>
+            /* Style inputs, select elements and textareas */
+            input[type=text], select, textarea{
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                resize: vertical;
+            }
+            select{
+                height:200px
+            }
+            /* Style the label to display next to the inputs */
+            label {
+                padding: 12px 12px 12px 0;
+                display: inline-block;
             }
 
-            registrant.experience = seletedExperience;
-            registrant.languages = selectedLanguages;
-            registrant.name = firstName + " " + lastName;
-
-            var display = "";
-            registrants.push(registrant);
-            for (i = 0; i < registrants.length; i++) {
-                display += registrants[i].name + " " + registrants[i].experience + " programming experience: " + registrants[i].languages.toString() + " <br/>";
+            /* Style the submit button */
+            input[type=submit] {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                float: right;
             }
 
-            document.getElementById("registrantsList").innerHTML = display;
-        }
-    </script>
-</head>
-<body>
-    <form>
-        <div id="registrationForm">
-            <fieldset>
-                <legend> Course registration</legend>
-                <p>ACME Course Registration</p>
-                <label for="firstName">First name:</label>
-                <input type="text" id="firstName" required />
-                <label for="lastName">Last name</label>
-                <input type="text" required id="lastName" />
-                <p>Do you have any programming experience:</p>
-                <label for="yesProgrammer">Yes</label><input type="radio" id="yesProgrammer" name="hasExperience" value="yes" />
-                <label for="notProgrammer">No</label><input type="radio" id="notProgrammer" name="hasExperience" value="no" />
-                <p>What Programming Languages have you used before?</p>
-                <select name="progLanguage" id="progLanguage" multiple>
-                    <optgroup label="Query Languages">
-                        <option value="SQLServer"> SQL Server Programming</option>
-                        <option value="Oracle"> Oracle PLSQL</option>
-                        <option value="Mongo"> Mongo</option>
-                    </optgroup>
-                    <optgroup label="General Programming Languages">
-                        <option value="CSharp">C# Programming</option>
-                        <option value="Java">Java Programming</option>
-                        <option value="JavaScript">JavaScript</option>
-                        <option value="Php">Php</option>
-                        <option value="VB">Visual Basic</option>
-                        <option value="Scala">Scala</option>
-                    </optgroup>
-                </select>
-                <input type="button" value="register" onclick="handleForm()" />
-            </fieldset>
-            <p>Registrants</p>
-            <div id="registrantsList"></div>
-        </div>
-    </form>
-</body>
+            /* Style the container */
+            .container {
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 20px;
+            }
+
+            /* Floating column for labels: 25% width */
+            .col-25 {
+                float: left;
+                width: 25%;
+                margin-top: 6px;
+            }
+
+            /* Floating column for inputs: 75% width */
+            .col-75 {
+                float: left;
+                width: 75%;
+                margin-top: 6px;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+            @media screen and (max-width: 600px) {
+                .col-25, .col-75, input[type=submit] {
+                    width: 100%;
+                    margin-top: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <form>
+            <div id="registrationForm">
+                <fieldset>
+                    <legend> Course registration</legend>
+                    <p>ACME Course Registration</p>
+                    <label for="firstName">First name</label>
+                    <input type="text" id="firstName" required />
+                    <label for="lastName">Last name</label>
+                    <input type="text" required id="lastName" />
+                    <p>Do you have any programming experience:</p>
+                    <label for="yesProgrammer">Yes</label><input type="radio" id="yesProgrammer" name="hasExperience" value="yes" />
+                    <label for="notProgrammer">No</label><input type="radio" id="notProgrammer" name="hasExperience" value="no" />
+                    <p>What Programming Languages have you used before?</p>
+                    <select name="progLanguage" id="progLanguage" multiple>
+                        <optgroup label="Query Languages">
+                            <option value="SQLServer"> SQL Server Programming</option>
+                            <option value="Oracle"> Oracle PLSQL</option>
+                            <option value="Mongo"> Mongo</option>
+                        </optgroup>
+                        <optgroup label="General Programming Languages">
+                            <option value="CSharp">C# Programming</option>
+                            <option value="Java">Java Programming</option>
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="Php">Php</option>
+                            <option value="VB">Visual Basic</option>
+                            <option value="Scala">Scala</option>
+                        </optgroup>
+                    </select>
+                    <input type="button" value="register" onclick="handleForm()" />
+                </fieldset>
+                <p id="courseRegistrants">Course Registrants</p>
+                <div id="registrantsList"></div>
+<!--                <table id="registrants" class="display" width="100%"></table>-->
+            </div>
+        </form>
+    </body>
 </html>
